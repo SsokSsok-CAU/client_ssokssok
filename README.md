@@ -1,6 +1,11 @@
 # client_ssokssok
+
 Client for Paint_ssokssok (React Native)
 
+# PRETTIER
+
+[VSCODE]
+Prettier - Code formatter 사용
 
 ## MANUAL
 

@@ -15,4 +15,7 @@ web-build/
 
 
 # firebase
-firebase-config.js
+# firebase-config.js
+
+# test code
+test_code/
