@@ -5,5 +5,5 @@ import GuidePage from './core/screen/Guide/GuidePage';
 import GuideMainPage from './core/screen/Guide/GuideMainPage';
 
 export default function App() {
-  return <GuidePage />;
+  return <Core />;
 }
