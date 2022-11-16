@@ -1,38 +1,10 @@
 import React from "react";
 import { StyleSheet, View, Text, Image, Button, Pressable ,Alert, Dimensions, TouchableOpacity} from "react-native";
 import {useState, useEffect} from 'react';
-import Carousel, { Pagination } from 'react-native-snap-carousel';
 
-function GuidePage(props) {
-  const screenWidth = Math.round(Dimensions.get('window').width);
-  const sliderWidth = Dimensions.get('window').width;
-
-  const guideProps = [{
-    "title" : "색칠쏙쏙",
-    "description" : "원하는 사진을 그림도면으로 만들어보세요!",
-    "uri": require('../../assets/guide/guide0.png'),
-  },
-  {
-    "title" : "만들어봐요",
-    "description" : "사진을 도면으로 만들어보세요!",
-    "uri": require('../../assets/guide/guide1.png'),
-  },
-  {
-    "title" : "함께 색칠해요",
-    "description" : "도면을 같이 색칠하고 공유해요!",
-    "uri": require('../../assets/guide/guide2.png'),
-  }];
-
-  const _renderItem = ({item}) => {
-    return (
-      <View style={styles.itemContainer}>
-        <Image style={styles.itemImage} source={item.uri}></Image>
-      </View>
-    );
-  }
-  const [entries, activeSlide] = useState(0);
+function PicDetailPage(props) {
   const start = () =>{
-    props.navigation.navigate('GuideMainPage');
+    Alert.alert("start");
   }
   const signUp = () => {
     Alert.alert("signup");
@@ -41,24 +13,10 @@ function GuidePage(props) {
     <View style={styles.container}>
       <View style={styles.guideTitleContainer}>
         <Text style={styles.title}>
-          {guideProps[entries].title}
           </Text>
-        <Text style={styles.description}>{guideProps[entries].description}</Text>
+        <Text style={styles.description}></Text>
       </View>
       <View style={styles.guideImgContainer}>
-        <Carousel
-          data={guideProps}
-          renderItem={_renderItem}
-          pageWidth={screenWidth - (16 + 36) * 2}
-          sliderWidth={sliderWidth}
-          itemWidth={sliderWidth}
-          onSnapToItem={(index) => activeSlide(()=>index) }
-          pagingEnabled={true}
-        />
-        <Pagination
-          dotsLength={guideProps.length}
-          activeDotIndex={entries}>
-        </Pagination>
       </View>
       <View style={styles.guideBtnContainer}>
       <Pressable style={styles.buttonStart} onPress ={start}>
@@ -141,4 +99,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default GuidePage;
+export default PicDetailPage;

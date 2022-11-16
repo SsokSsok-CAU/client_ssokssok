@@ -1,13 +1,23 @@
 import React from "react";
-import { StyleSheet, Image } from "react-native";
+import { StyleSheet, Image, TouchableOpacity,Alert } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 function ImageView(props) {
+  const dummyImg = require("../assets/sample/picture/pic2.png");
+  const detailPicture = () =>{
+    props.navigation.navigate('GuideDetailPage', {
+      image : dummyImg
+    });
+  }
 	return (
-		<Image
-			//source={props}
-			style={styles.image}
-			source={require("../assets/sample/picture/pic2.png")}
-		></Image>
+    <TouchableOpacity onPress={detailPicture}>
+      <Image
+        //source={props}
+        style={styles.image}
+        source={dummyImg}
+      ></Image>
+    </TouchableOpacity>
 	);
 }
 
