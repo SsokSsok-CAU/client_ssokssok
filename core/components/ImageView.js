@@ -4,10 +4,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 function ImageView(props) {
-  const dummyImg = require('../assets/sample/picture/pic2.png');
   const detailPicture = () => {
     props.navigation.navigate('GuideDetailPage', {
-      image: dummyImg,
+      image: props.uri,
     });
   };
   return (
@@ -15,7 +14,7 @@ function ImageView(props) {
       <Image
         //source={props}
         style={styles.image}
-        source={dummyImg}
+        source={{ uri: props.uri }}
       ></Image>
     </TouchableOpacity>
   );
@@ -27,7 +26,7 @@ const styles = StyleSheet.create({
     height: 280,
     justifyContent: 'center',
     alignContent: 'center',
-    resizeMode: 'cover',
+    resizeMode: 'contain',
   },
 });
 

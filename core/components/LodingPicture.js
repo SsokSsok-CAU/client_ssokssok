@@ -7,7 +7,7 @@ function LoadingPicture(props) {
       <TouchableOpacity>
         <Image
           style={styles.image}
-          source={require('../assets/sample/picture/loading.png')}
+          source={require('../assets/guide/loading.gif')}
         />
       </TouchableOpacity>
     </View>
@@ -25,8 +25,7 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     borderRadius: 20,
     marginBottom: 10,
-    width: 230,
-    height: 280,
+    width: 50,
   },
 });
 

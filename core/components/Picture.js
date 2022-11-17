@@ -32,7 +32,9 @@ function Picture(props) {
               {props.uri == undefined ? (
                 <Text style={styles.imageName}>사진을 선택하세요</Text>
               ) : (
-                <Text style={styles.imageName}>Image 1</Text>
+                <Text style={styles.imageName}>
+                  {props.uri.split('Image%2F')[1].split('.')[0]}
+                </Text>
               )}
             </>
           )}

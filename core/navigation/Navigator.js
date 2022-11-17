@@ -14,6 +14,7 @@ import GuidePage from '../screen/Guide/GuidePage';
 import GuideMainPage from '../screen/Guide/GuideMainPage';
 import GuideDetailPage from '../screen/Guide/GuideDetailPage';
 import MainPage from '../screen/Main/MainPage';
+import DrawingPage from './../screen/DrawingPage';
 
 // Navigator Practice
 // TODO : For Main Navigator & Nesting Navigator
@@ -31,6 +32,7 @@ function Navigator() {
         <Stack.Screen name="GuideMainPage" component={GuideMainPage} />
         <Stack.Screen name="GuideDetailPage" component={GuideDetailPage} />
         <Stack.Screen name="MainPage" component={MainPage} />
+        <Stack.Screen name="DrawingPage" component={DrawingPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

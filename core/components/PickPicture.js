@@ -49,7 +49,7 @@ function PickPicture(props) {
     const metadata = {
       contentType: 'image/png',
     };
-    const fileRef = ref(getStorage(), 'pic1.png');
+    const fileRef = ref(getStorage(), 'Image/guide.png');
     const result = await uploadBytes(fileRef, blob, metadata);
 
     // We're done with the blob, close and release it

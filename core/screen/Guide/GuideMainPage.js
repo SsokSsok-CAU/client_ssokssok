@@ -9,19 +9,26 @@ import {
 } from 'react-native';
 import { useState, useEffect } from 'react';
 import Picture from './../../components/Picture';
+import { storage } from './../../configs/firebaseConfig';
+import { getDownloadURL, ref } from 'firebase/storage';
 
 function GuideMainPage(props) {
-  const [isAllowUpload, setIsAllowUpload] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
-  const [isFinishGuide, setIsFinishGuide] = useState(false);
   const image = require('../../../assets/background-iphone14.png');
-  const dumpUri = require('../../assets/sample/picture/pic1.png');
-  const upload = () => {
+  const [isUploading, setIsUploading] = useState(false);
+  const [isAllowUpload, setIsAllowUpload] = useState(false);
+  const [isFinishGuide, setIsFinishGuide] = useState(false);
+  const [pics, setPics] = useState(null);
+  const getPicture = async () => {
+    const itemRef = ref(storage, 'convertImage/guide.png');
+    getDownloadURL(itemRef).then((url) => setPics(url));
+  };
+  const upload = async () => {
     setIsUploading(true);
+    getPicture();
     setTimeout(() => {
-      setIsUploading(false);
       setIsAllowUpload(false);
       setIsFinishGuide(true);
+      setIsUploading(false);
     }, 2000);
   };
 
@@ -37,7 +44,7 @@ function GuideMainPage(props) {
         <View style={styles.guideTitleContainer}>
           {isFinishGuide ? (
             <>
-              <Text style={styles.title}>도면을 클릭해보세요!</Text>
+              <Text style={styles.title}>사진을 클릭해보세요!</Text>
               <Text style={styles.description}>완성했어요!</Text>
             </>
           ) : (
@@ -60,7 +67,7 @@ function GuideMainPage(props) {
         </View>
         <View style={styles.guideImgContainer}>
           {isFinishGuide ? (
-            <Picture navigation={props.navigation} uri={dumpUri}></Picture>
+            <Picture navigation={props.navigation} uri={pics}></Picture>
           ) : (
             <Picture
               isUploading={isUploading}

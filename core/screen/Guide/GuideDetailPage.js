@@ -17,7 +17,10 @@ function GuideDetailPage(props) {
   const arrowImg = require('../../assets/sample/picture/arrow.png');
   const image = props.route.params.image;
   const btnPress = () => {
-    Alert.alert('hi');
+    Alert.alert('준비중이예요');
+  };
+  const drawingPress = () => {
+    props.navigation.navigate('DrawingPage', { image: image });
   };
   return (
     <View style={styles.container}>
@@ -30,7 +33,7 @@ function GuideDetailPage(props) {
           <Picture uri={image}></Picture>
         </View>
         <ScrollView style={styles.guideBtnContainer}>
-          <Pressable style={styles.detailBtn} onPress={btnPress}>
+          <Pressable style={styles.detailBtn} onPress={drawingPress}>
             <View style={styles.squareBlue}></View>
             <Text style={styles.detailBtnText}>도면보기</Text>
             <Image style={styles.arrowImg} source={arrowImg}></Image>
