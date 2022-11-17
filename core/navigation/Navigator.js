@@ -14,7 +14,6 @@ import GuidePage from '../screen/Guide/GuidePage';
 import GuideMainPage from '../screen/Guide/GuideMainPage';
 import GuideDetailPage from '../screen/Guide/GuideDetailPage';
 import MainPage from '../screen/Main/MainPage';
-import PicDetailPage from './../screen/Paint/PicDetailPage';
 
 // Navigator Practice
 // TODO : For Main Navigator & Nesting Navigator

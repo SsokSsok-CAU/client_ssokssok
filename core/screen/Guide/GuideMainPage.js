@@ -18,15 +18,14 @@ function GuideMainPage(props) {
   const dumpUri = require('../../assets/sample/picture/pic1.png');
   const upload = () => {
     setIsUploading(true);
-    //api for upload instead its time
     setTimeout(() => {
       setIsUploading(false);
       setIsAllowUpload(false);
       setIsFinishGuide(true);
     }, 2000);
   };
+
   const start = () => {
-    //api for upload instead its time
     props.navigation.navigate('MainPage');
   };
   const allowUploadImage = () => {

@@ -1,6 +1,6 @@
-import React from "react";
-import Navigator from "./navigation/Navigator";
+import React from 'react';
+import Navigator from './navigation/Navigator';
 
 export default function Core() {
-	return <Navigator />;
+  return <Navigator />;
 }
