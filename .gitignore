@@ -19,3 +19,6 @@ web-build/
 
 # test code
 test_code/
+
+#configs
+core/configs/

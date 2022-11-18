@@ -4,13 +4,12 @@ import {
   View,
   Text,
   Pressable,
-  Alert,
   ImageBackground,
 } from 'react-native';
 import { useState, useEffect } from 'react';
-import Picture from './../../components/Picture';
 import { storage } from './../../configs/firebaseConfig';
 import { getDownloadURL, ref } from 'firebase/storage';
+import GuidePicture from './../../components/GuidePicture';
 
 function GuideMainPage(props) {
   const image = require('../../../assets/background-iphone14.png');
@@ -67,12 +66,15 @@ function GuideMainPage(props) {
         </View>
         <View style={styles.guideImgContainer}>
           {isFinishGuide ? (
-            <Picture navigation={props.navigation} uri={pics}></Picture>
+            <GuidePicture
+              navigation={props.navigation}
+              uri={pics}
+            ></GuidePicture>
           ) : (
-            <Picture
+            <GuidePicture
               isUploading={isUploading}
               allowUploadImage={allowUploadImage}
-            ></Picture>
+            ></GuidePicture>
           )}
         </View>
         <View style={styles.guideBtnContainer}>

@@ -1,10 +1,10 @@
 import React from 'react';
 import ImageView from './ImageView';
-import PickPicture from './PickPicture';
 import LoadingPicture from './LoadingPicture';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import GuidePickPicture from './GuidePickPicture';
 
-function Picture(props) {
+function GuidePicture(props) {
   const allowUploadImage = () => {
     props.allowUploadImage();
   };
@@ -17,7 +17,7 @@ function Picture(props) {
           ) : (
             <>
               {props.uri == undefined ? (
-                <PickPicture
+                <GuidePickPicture
                   navigation={props.navigation}
                   allowUploadImage={allowUploadImage}
                 />
@@ -75,4 +75,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Picture;
+export default GuidePicture;

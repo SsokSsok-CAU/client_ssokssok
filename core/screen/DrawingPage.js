@@ -8,17 +8,30 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 function DrawingPage(props) {
   const [image, setImage] = useState(props.route.params.image);
+  const [loading, setLoading] = useState(true);
   const convertTitle =
     'convertImage/' + image.split('Image%2F')[1].split('.')[0] + '.png';
-  const itemRef = ref(storage, convertTitle);
-  getDownloadURL(itemRef).then((url) => {
-    setImage(url);
-  });
+  const getDrawing = async () => {
+    setLoading(true);
+    const itemRef = ref(storage, convertTitle);
+    getDownloadURL(itemRef)
+      .then((url) => {
+        setImage(url);
+      })
+      .then(setLoading(false));
+  };
+  useEffect(() => {
+    getDrawing();
+  }, []);
   return (
     <View style={styles.container}>
       <View style={styles.guideTitleContainer}></View>
       <View style={styles.guideImgContainer}>
-        <Image style={styles.image} source={{ uri: image }}></Image>
+        {loading ? (
+          <Image source={require('../assets/guide/loading.gif')}></Image>
+        ) : (
+          <Image style={styles.image} source={{ uri: image }}></Image>
+        )}
       </View>
       <View style={styles.guideBtnContainer}></View>
     </View>
@@ -37,7 +50,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
   },
   guideImgContainer: {
-    flex: 7,
+    flex: 30,
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
@@ -51,9 +64,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   image: {
-    resizeMode: 'cover',
-    width: '90%',
-    height: '70%',
+    resizeMode: 'contain',
+    width: '100%',
+    height: '100%',
     borderRadius: 30,
   },
 });

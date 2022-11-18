@@ -1,7 +1,7 @@
 import React from 'react';
 import Picture from './Picture';
 import { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView, RefreshControl } from 'react-native';
 
 function Album(props) {
   return (
@@ -20,7 +20,7 @@ function Album(props) {
               uri={pic}
             />
           ))}
-      <Picture style={styles.pics} />
+      <Picture navigation={props.navigation} style={styles.pics} />
     </ScrollView>
   );
 }

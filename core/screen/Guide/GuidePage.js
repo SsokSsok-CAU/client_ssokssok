@@ -4,16 +4,13 @@ import {
   View,
   Text,
   Image,
-  Button,
   Pressable,
-  Alert,
   Dimensions,
-  TouchableOpacity,
 } from 'react-native';
 import { useState, useEffect } from 'react';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 
-function GuidePage({ navigation }) {
+function GuidePage({ navigation }, props) {
   const screenWidth = Math.round(Dimensions.get('window').width);
   const sliderWidth = Dimensions.get('window').width;
 
@@ -47,7 +44,9 @@ function GuidePage({ navigation }) {
     navigation.navigate('GuideMainPage');
   };
   const signUp = () => {
-    Alert.alert('signup');
+    //TODO - signup
+    navigation.navigate('MainPage');
+    //Alert.alert('signup');
   };
   return (
     <View style={styles.container}>
