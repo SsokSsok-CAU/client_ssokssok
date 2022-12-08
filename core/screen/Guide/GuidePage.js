@@ -46,6 +46,10 @@ function GuidePage({ navigation }, props) {
   const signUp = () => {
     //TODO - signup
     navigation.navigate('MainPage');
+    // navigation.reset({
+    //   index: 0,
+    //   routes: [{ name: 'MainPage' }],
+    // });
     //Alert.alert('signup');
   };
   return (

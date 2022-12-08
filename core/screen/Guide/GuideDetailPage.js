@@ -20,7 +20,7 @@ function GuideDetailPage(props) {
     Alert.alert('준비중이예요');
   };
   const drawingPress = () => {
-    props.navigation.navigate('DrawingPage', { image: image });
+    props.navigation.navigate('ConvertPage', { image: image });
   };
   return (
     <View style={styles.container}>

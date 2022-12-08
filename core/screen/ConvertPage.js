@@ -6,7 +6,7 @@ import { storage } from '../configs/firebaseConfig';
 import { ref, getDownloadURL } from 'firebase/storage';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
-function DrawingPage(props) {
+function ConvertPage(props) {
   const [image, setImage] = useState(props.route.params.image);
   const [loading, setLoading] = useState(true);
   const convertTitle =
@@ -71,4 +71,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DrawingPage;
+export default ConvertPage;
