@@ -9,7 +9,6 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
-import { useState, useEffect } from 'react';
 import Picture from './../../components/Picture';
 
 function GuideDetailPage(props) {

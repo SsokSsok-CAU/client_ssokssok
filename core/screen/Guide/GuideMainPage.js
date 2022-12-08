@@ -6,7 +6,7 @@ import {
   Pressable,
   ImageBackground,
 } from 'react-native';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { storage } from './../../configs/firebaseConfig';
 import { getDownloadURL, ref } from 'firebase/storage';
 import GuidePicture from './../../components/GuidePicture';
@@ -18,7 +18,7 @@ function GuideMainPage(props) {
   const [isFinishGuide, setIsFinishGuide] = useState(false);
   const [pics, setPics] = useState(null);
   const getPicture = async () => {
-    const itemRef = ref(storage, 'convertImage/guide.png');
+    const itemRef = ref(storage, 'guide/convertGuide.png');
     getDownloadURL(itemRef).then((url) => setPics(url));
   };
   const upload = async () => {

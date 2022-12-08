@@ -6,9 +6,11 @@ import { storage } from '../../configs/firebaseConfig';
 import { ref, getDownloadURL, listAll } from 'firebase/storage';
 import { Pressable } from 'react-native';
 
-function MainPage(props) {
+function MainPage({ navigation, route }, props) {
+  const userInfo = route.params.userInfo;
   const [pics, setPics] = useState([]);
   const [loading, setLoading] = useState(true);
+  const background = require('../../../assets/background-iphone14.png');
   const getPicture = async () => {
     setPics([]);
     setLoading(true);
@@ -28,12 +30,12 @@ function MainPage(props) {
       });
   };
   const goHome = () => {
-    props.navigation.navigate('GuidePage');
+    navigation.navigate('GuidePage');
   };
   useEffect(() => {
     getPicture();
   }, []);
-  const background = require('../../../assets/background-iphone14.png');
+
   return (
     <View style={styles.container}>
       <ImageBackground source={background} style={styles.image}>

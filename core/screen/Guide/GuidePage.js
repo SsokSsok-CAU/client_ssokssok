@@ -7,7 +7,7 @@ import {
   Pressable,
   Dimensions,
 } from 'react-native';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 function GuidePage({ navigation }, props) {
@@ -41,16 +41,10 @@ function GuidePage({ navigation }, props) {
   };
   const [entries, activeSlide] = useState(0);
   const start = () => {
-    navigation.navigate('GuideMainPage');
+    navigation.navigate('LoginPage');
   };
   const signUp = () => {
-    //TODO - signup
-    navigation.navigate('MainPage');
-    // navigation.reset({
-    //   index: 0,
-    //   routes: [{ name: 'MainPage' }],
-    // });
-    //Alert.alert('signup');
+    navigation.navigate('SignUpPage');
   };
   return (
     <View style={styles.container}>
@@ -113,21 +107,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontSize: 32,
+    fontSize: '35em',
     fontWeight: 'bold',
     color: '#212121',
   },
   description: {
     fontsize: 15,
     color: '#5A5A5A',
-    marginTop: 12,
+    marginTop: 18,
   },
   buttonStart: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 14,
     borderRadius: 30,
-    width: 310,
+    width: Dimensions.get('window').width / 1.2,
     elevation: 3,
     backgroundColor: '#0062D4',
   },

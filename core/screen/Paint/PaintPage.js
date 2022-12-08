@@ -16,11 +16,11 @@ import {
 import { SketchCanvas, SketchCanvasRef } from 'rn-perfect-sketch-canvas';
 import { useSnapshot } from 'valtio';
 import { state } from '../../store';
-import PaintToolbar from './../../components/PaintToolbar';
-import PaintHeader from './../../components/PaintHeader';
+import PaintToolbar from '../../components/PaintToolbar';
+import PaintHeader from '../../components/PaintHeader';
 import { useState } from 'react';
 
-function PaintPageZoom() {
+function PaintPage(props) {
   const { width, height } = useWindowDimensions();
   const [panToMove, setPanToMove] = useState(false);
   const [isDrawing, setIsDrawing] = useState(true);
@@ -154,4 +154,4 @@ const styles = StyleSheet.create({
   buttonText: { fontSize: 20, fontWeight: 'bold', color: 'white' },
 });
 
-export default PaintPageZoom;
+export default PaintPage;
