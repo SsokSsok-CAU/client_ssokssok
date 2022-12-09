@@ -1,38 +1,42 @@
 import React from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Image,
+  Dimensions,
+  DeviceEventEmitter,
+} from 'react-native';
 import { useState, useEffect } from 'react';
-import { API } from '../configs/axios';
-import { storage } from '../configs/firebaseConfig';
-import { ref, getDownloadURL } from 'firebase/storage';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import ImageZoom from 'react-native-image-pan-zoom';
+import { image } from './../store';
 
 function ConvertPage(props) {
-  const [image, setImage] = useState(props.route.params.image);
-  const [loading, setLoading] = useState(true);
-  const convertTitle =
-    'convertImage/' + image.split('Image%2F')[1].split('.')[0] + '.png';
-  const getDrawing = async () => {
-    setLoading(true);
-    const itemRef = ref(storage, convertTitle);
-    getDownloadURL(itemRef)
-      .then((url) => {
-        setImage(url);
-      })
-      .then(setLoading(false));
-  };
-  useEffect(() => {
-    getDrawing();
-  }, []);
+  console.log(image.converting);
   return (
     <View style={styles.container}>
       <View style={styles.guideTitleContainer}></View>
-      <View style={styles.guideImgContainer}>
-        {loading ? (
-          <Image source={require('../assets/guide/loading.gif')}></Image>
-        ) : (
-          <Image style={styles.image} source={{ uri: image }}></Image>
-        )}
-      </View>
+      <ImageZoom
+        cropWidth={Dimensions.get('screen').width}
+        cropHeight={Dimensions.get('screen').height}
+        imageWidth={Dimensions.get('screen').width}
+        imageHeight={Dimensions.get('screen').width}
+        panToMove={true}
+        enableDoubleClickZoom={true}
+        enableSwipeDown={false}
+        enableCenterFocus={true}
+      >
+        <View style={styles.guideImgContainer}>
+          {image.converting ? (
+            <Image source={require('../assets/guide/loading.gif')}></Image>
+          ) : (
+            <Image
+              style={styles.image}
+              source={{ uri: image.convertUrl }}
+              //source={{ uri: image.svgUrl }}
+            ></Image>
+          )}
+        </View>
+      </ImageZoom>
       <View style={styles.guideBtnContainer}></View>
     </View>
   );
@@ -41,7 +45,7 @@ function ConvertPage(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FCDE02',
+    backgroundColor: '#ffffff',
     alignItems: 'center',
     justifyContent: 'center',
   },

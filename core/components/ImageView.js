@@ -3,7 +3,7 @@ import { StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 
 function ImageView(props) {
   const detailPicture = () => {
-    props.navigation.navigate('GuideDetailPage', {
+    props.navigation.navigate('MainDetailPage', {
       image: props.uri,
     });
   };

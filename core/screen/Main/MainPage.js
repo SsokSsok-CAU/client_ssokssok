@@ -1,64 +1,83 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, ImageBackground } from 'react-native';
+import { StyleSheet, View, Text, Image, Dimensions } from 'react-native';
 import Album from '../../components/Album';
 import { useState, useEffect } from 'react';
-import { storage } from '../../configs/firebaseConfig';
-import { ref, getDownloadURL, listAll } from 'firebase/storage';
 import { Pressable } from 'react-native';
+import { user, images, image } from '../../store';
+import { useSnapshot } from 'valtio';
+import { API } from './../../configs/axios';
 
 function MainPage({ navigation, route }, props) {
-  const userInfo = route.params.userInfo;
   const [pics, setPics] = useState([]);
   const [loading, setLoading] = useState(true);
-  const background = require('../../../assets/background-iphone14.png');
-  const getPicture = async () => {
+  const snapImages = useSnapshot(images);
+  const snapImage = useSnapshot(image);
+
+  const getPics = async () => {
     setPics([]);
     setLoading(true);
-    const listRef = ref(storage, 'Image');
-    listAll(listRef)
-      .then((res) => {
-        for (let itemRef of res.items) {
-          getDownloadURL(itemRef).then((url) => {
-            setPics((pics) => [url, ...pics]);
-          });
-        }
-        setLoading(false);
-      })
-      .catch((error) => {
-        setLoading(false);
-        console.log(error);
+    try {
+      const response = await API.get('image/myfiles/beforeConvert', {
+        headers: {
+          Authorization: user.token,
+        },
       });
+      response.data.map((el) => {
+        setPics((pics) => [el[1], ...pics]);
+      });
+      setLoading(false);
+    } catch (e) {
+      setLoading(false);
+      console.log(e);
+    }
   };
+
+  const getPicsSnap = async () => {
+    setLoading(true);
+    try {
+      const response = await API.get('image/myfiles/groupby', {
+        headers: {
+          Authorization: user.token,
+        },
+      });
+      console.log(response.data);
+      setLoading(false);
+    } catch (e) {
+      setLoading(false);
+      console.log(e);
+    }
+  };
+
   const goHome = () => {
     navigation.navigate('GuidePage');
   };
+
   useEffect(() => {
-    getPicture();
+    getPics();
+    //getPicsSnap();
   }, []);
 
   return (
     <View style={styles.container}>
-      <ImageBackground source={background} style={styles.image}>
-        <View style={styles.MainTitleContainer}>
-          <Text style={styles.title}>성오님의 앨범이예요!</Text>
-          <Text style={styles.description}>도면을 클릭해봐요!</Text>
-        </View>
-        <View style={styles.AlbumContainer}>
-          {loading ? (
-            <Image
-              style={styles.loading}
-              source={require('../../assets/guide/loading.gif')}
-            ></Image>
-          ) : (
-            <Album pics={pics} navigation={props.navigation} />
-          )}
-        </View>
-        <View style={styles.footContainer}>
-          <Pressable style={styles.buttonHome} onPress={goHome}>
-            <Text style={styles.buttonHomeText}>HOME</Text>
-          </Pressable>
-        </View>
-      </ImageBackground>
+      <View style={styles.MainTitleContainer}>
+        <Text style={styles.title}>{user.displayName}님의 앨범이예요!</Text>
+        <Text style={styles.description}>도면을 클릭해봐요!</Text>
+      </View>
+      <View style={styles.AlbumContainer}>
+        {loading ? (
+          <Image
+            style={styles.loading}
+            source={require('../../assets/guide/loading.gif')}
+          ></Image>
+        ) : (
+          <Album pics={pics} navigation={navigation} />
+        )}
+      </View>
+      <View style={styles.footContainer}>
+        <Pressable style={styles.buttonHome} onPress={goHome}>
+          <Text style={styles.buttonHomeText}>HOME</Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -66,7 +85,7 @@ function MainPage({ navigation, route }, props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#FCDE02',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -101,7 +120,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 14,
     borderRadius: 30,
-    width: '90%',
+    width: Dimensions.get('window').width / 1.2,
     elevation: 3,
     backgroundColor: '#0062D4',
   },
@@ -109,11 +128,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     fontSize: 18,
-  },
-  image: {
-    resizeMode: 'contain',
-    width: '100%',
-    height: '100%',
   },
 });
 

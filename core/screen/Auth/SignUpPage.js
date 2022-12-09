@@ -13,6 +13,8 @@ import {
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import CONSTANT from '../../constants';
 import { API } from './../../configs/axios';
+import { user } from '../../store';
+import { useSnapshot } from 'valtio';
 
 function SignUpPage({ navigation }, props) {
   const logoImg = require('../../../assets/logo.png');
@@ -22,6 +24,7 @@ function SignUpPage({ navigation }, props) {
   const onChangeId = (id) => setId(id);
   const onChangePw = (pw) => setPw(pw);
   const onChangeName = (displayName) => setName(displayName);
+  const snapUser = useSnapshot(user);
 
   const signUp = async () => {
     const body = new FormData();
@@ -29,16 +32,25 @@ function SignUpPage({ navigation }, props) {
     body.append(`password`, `${pw}`);
     body.append(`displayName`, `${displayName}`);
     try {
+      //TODO : 가이드 화면 구현
       const response = await API.post('auth/signup', body, {
         headers: { 'Content-Type': 'multipart/form-data' },
         transformRequest: (formData) => formData,
-      }).data;
-      console.log(response);
+      });
+      snappingUser(id, response.data.displayName, response.data.token);
+      navigation.navigate('MainPage');
+      //navigation.navigate('GuideMainPage', { userInfo: userInfo });
     } catch (e) {
       Alert.alert(
         '아이디는 이메일 형식, 비밀번호는 6자 이상의 영어+숫자입니다!'
       );
+      console.log(e);
     }
+  };
+  const snappingUser = (id, displayName, token) => {
+    user.id = id;
+    user.displayName = displayName;
+    user.token = token;
   };
   return (
     <View style={styles.container}>

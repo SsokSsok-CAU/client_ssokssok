@@ -1,4 +1,3 @@
-import { center } from '@shopify/react-native-skia';
 import React, { useState } from 'react';
 import {
   StyleSheet,
@@ -9,19 +8,25 @@ import {
   Dimensions,
   KeyboardAvoidingView,
   Alert,
+  Keyboard,
 } from 'react-native';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import CONSTANT from '../../constants';
 import { API } from './../../configs/axios';
+import { user } from '../../store';
+import { useSnapshot } from 'valtio';
 
 function LoginPage({ navigation }, props) {
   const logoImg = require('../../../assets/logo.png');
   const [id, setId] = useState('');
   const [pw, setPw] = useState('');
+  const [loading, setLoading] = useState(false);
   const onChangeId = (id) => setId(id);
   const onChangePw = (pw) => setPw(pw);
+  const snapUser = useSnapshot(user);
 
   const login = async () => {
+    setLoading(true);
     const body = new FormData();
     body.append(`email`, `${id}`);
     body.append(`password`, `${pw}`);
@@ -30,15 +35,23 @@ function LoginPage({ navigation }, props) {
         headers: { 'Content-Type': 'multipart/form-data' },
         transformRequest: (formData) => formData,
       });
-      const userInfo = {
-        id: id,
-        displayName: response.data.displayName,
-        token: response.data.token,
-      };
-      navigation.navigate('MainPage', { userInfo: userInfo });
+      await snappingUser(
+        id,
+        response.data.displayName,
+        response.data.token
+      ).then(function () {
+        setLoading(false);
+        navigation.navigate('MainPage');
+      });
     } catch (e) {
+      setLoading(false);
       Alert.alert('아이디와 비밀번호를 확인해주세요!');
     }
+  };
+  const snappingUser = async (id, displayName, token) => {
+    user.id = id;
+    user.displayName = displayName;
+    user.token = token;
   };
   const findPw = () => {
     //TODO : make modal find password
@@ -72,7 +85,10 @@ function LoginPage({ navigation }, props) {
           style={styles.inputForm}
           secureTextEntry
         ></TextInput>
-        <Pressable onPress={login} style={styles.buttonLogin}>
+        <Pressable
+          onPress={(Keyboard.dismiss(), login)}
+          style={styles.buttonLogin}
+        >
           <Text style={styles.buttonLoginText}>로그인하기</Text>
         </Pressable>
         <Pressable onPress={findPw}>
@@ -84,6 +100,17 @@ function LoginPage({ navigation }, props) {
           <Text style={styles.buttonSignUpText}>회원가입하러가기</Text>
         </Pressable>
       </View>
+      {loading ? (
+        <>
+          <View style={styles.overlay}>
+            <Image
+              width="20"
+              height="20"
+              source={require('../../assets/guide/loading.gif')}
+            ></Image>
+          </View>
+        </>
+      ) : null}
     </View>
   );
 }
@@ -153,6 +180,15 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     color: '#0062D4',
+  },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

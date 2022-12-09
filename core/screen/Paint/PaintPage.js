@@ -1,6 +1,6 @@
 import ImageZoom from 'react-native-image-pan-zoom';
 import * as React from 'react';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -15,10 +15,9 @@ import {
 // for android
 import { SketchCanvas, SketchCanvasRef } from 'rn-perfect-sketch-canvas';
 import { useSnapshot } from 'valtio';
-import { state } from '../../store';
+import { state, image } from '../../store';
 import PaintToolbar from '../../components/PaintToolbar';
 import PaintHeader from '../../components/PaintHeader';
-import { useState } from 'react';
 
 function PaintPage(props) {
   const { width, height } = useWindowDimensions();
@@ -26,8 +25,9 @@ function PaintPage(props) {
   const [isDrawing, setIsDrawing] = useState(true);
   const [preStrokeWidth, setPreStrokeWidth] = useState(8);
   const snap = useSnapshot(state);
-  const canvasRef = useRef(null);
-  const dummyImg = require('../../assets/sample/png1.png');
+  const canvasRef = useRef(SketchCanvasRef);
+  state.imageTitle = image.title;
+  //const dummyImg = require('../../assets/sample/png1.png');
 
   const handleZoom = () => {
     setPanToMove(true);
@@ -53,31 +53,43 @@ function PaintPage(props) {
           isDrawing={isDrawing}
           handleFunction={{ handleDraw, handleZoom }}
         />
-        <ImageZoom
-          cropWidth={Dimensions.get('window').width}
-          cropHeight={Dimensions.get('window').height / 1.2}
-          imageWidth={Dimensions.get('window').width}
-          imageHeight={Dimensions.get('window').width}
-          panToMove={panToMove}
-          enableDoubleClickZoom={false}
-          enableSwipeDown={false}
-          enableCenterFocus={true}
+
+        <View
+          style={{
+            backgroundColor: '#ffffff',
+            overflow: 'hidden',
+            width: width - 24,
+            position: 'relative',
+          }}
         >
-          <View
-            style={{
-              backgroundColor: '#ffffff',
-              overflow: 'hidden',
-              width: width - 24,
-              marginLeft: 12,
-              position: 'relative',
-            }}
+          <ImageZoom
+            cropWidth={Dimensions.get('screen').width}
+            cropHeight={Dimensions.get('screen').height / 1.2}
+            imageWidth={Dimensions.get('screen').width}
+            imageHeight={Dimensions.get('screen').width}
+            panToMove={panToMove}
+            enableDoubleClickZoom={false}
+            enableSwipeDown={false}
+            enableCenterFocus={true}
           >
             <View style={styles.backgroundContainer}>
-              <Image
-                style={{ width: '100%', height: '100%' }}
-                source={dummyImg}
-                resizeMode="center"
-              />
+              {image.converting ? (
+                <Image
+                  source={require('../../assets/guide/loading.gif')}
+                ></Image>
+              ) : (
+                <>
+                  <Image
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                    }}
+                    source={{ uri: image.convertUrl }}
+                    //source={dummyImg}
+                    resizeMode="center"
+                  ></Image>
+                </>
+              )}
             </View>
             <View style={styles.overlay}>
               <View
@@ -96,8 +108,9 @@ function PaintPage(props) {
                 />
               </View>
             </View>
-          </View>
-        </ImageZoom>
+          </ImageZoom>
+        </View>
+
         <PaintToolbar />
       </View>
       {isDrawing ? (
@@ -122,7 +135,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   zoomContainer: {
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#FCDE02',
     flex: 1,
     alignItems: 'center',
   },

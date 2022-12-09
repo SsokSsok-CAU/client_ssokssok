@@ -13,12 +13,15 @@ import {
 } from 'react-native';
 import { Alert } from 'react-native';
 import { API } from './../configs/axios';
+import { user } from '../store';
+import { useSnapshot } from 'valtio';
 
-function PickPicture(props) {
+function PickPicture({ navigation }, props) {
   const [image, setImage] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [text, onChangeText] = useState('');
   const [loading, setLoading] = useState(false);
+  const snapUser = useSnapshot(user);
   const pickImage = async () => {
     setModalVisible(false);
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -54,18 +57,20 @@ function PickPicture(props) {
     const metadata = {
       contentType: 'image/png',
     };
-    const fileRef = ref(getStorage(), `Image/${text}.png`);
+
+    const fileRef = ref(getStorage(), `${snapUser.id}/Image/${text}.png`);
     const result = await uploadBytes(fileRef, blob, metadata);
 
     // We're done with the blob, close and release it
     blob.close();
+    sendAPItoConvert(image.uri, text);
     refreshMainPage();
     setLoading(false);
     return await getDownloadURL(fileRef);
   }
   const refreshMainPage = () => {
-    //TODO REFRESH
-    props.navigation.push('MainPage');
+    //TODO : REFRESH
+    //navigation.push('MainPage');
   };
   const sendAPItoConvert = async (uri, text) => {
     const body = new FormData();
@@ -73,7 +78,10 @@ function PickPicture(props) {
     body.append('filename', `${text}.png`);
     try {
       await API.post('image/processing', body, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: snapUser.token,
+        },
         transformRequest: (formData) => formData,
       });
     } catch (e) {
@@ -123,7 +131,6 @@ function PickPicture(props) {
               style={styles.buttonUpload}
               onPress={() => {
                 uploadImageAsync(image.uri, text);
-                sendAPItoConvert(image.uri, text);
                 setModalVisible(!modalVisible);
               }}
             >

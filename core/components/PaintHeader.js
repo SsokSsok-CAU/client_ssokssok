@@ -1,19 +1,10 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
-import { state } from '../store';
+import { Text, View, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { state, user } from '../store';
 import Util from '../utils';
-import * as FileSystem from 'expo-file-system';
-
-async function ensureDirExists() {
-  const dir = FileSystem.documentDirectory + 'myDirectory/';
-  const dirInfo = await FileSystem.getInfoAsync(dir);
-  if (!dirInfo.exists) {
-    console.log("directory doesn't exist, creating...");
-    await FileSystem.makeDirectoryAsync(dir, { intermediates: true });
-  } else {
-    console.log('directory alreay exists');
-  }
-}
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as png from '@vivaxy/png';
+import DOMParser from 'react-native-html-parser';
 
 const PaintHeader = ({ canvasRef, isDrawing, handleFunction }) => {
   /**
@@ -29,21 +20,35 @@ const PaintHeader = ({ canvasRef, isDrawing, handleFunction }) => {
     state.strokeColor = 'black';
   };
 
+  const storeData = async (value) => {
+    try {
+      await AsyncStorage.setItem(`${state.imageTitle}`, JSON.stringify(value));
+      Alert.alert('저장되었습니다!');
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem(`${state.imageTitle}`);
+      if (value !== null) {
+        const parsePath = JSON.parse(value);
+        canvasRef.current?.addPoints(parsePath);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const load = () => {
+    getData();
+  };
   const save = () => {
-    const image = canvasRef.current?.toSvg(500, 500);
-    if (image) {
-      console.log('SVG', image);
-      const fileUri = FileSystem.documentDirectory + 'myDirectory/myFile';
-      ensureDirExists()
-        .then(() =>
-          FileSystem.writeAsStringAsync(fileUri, image)
-            .then((contents) => {
-              console.log('write Success');
-              console.log(contents);
-            })
-            .catch((e) => console.log(e))
-        )
-        .catch((e) => console.log(e));
+    const points = canvasRef.current?.toPoints();
+    try {
+      storeData(points);
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -54,6 +59,40 @@ const PaintHeader = ({ canvasRef, isDrawing, handleFunction }) => {
   const redo = () => {
     canvasRef.current?.redo();
   };
+
+  const exportImg = () => {
+    const image = canvasRef.current?.toSvg(500, 500);
+    const parser = new DOMParser.DOMParser();
+    const doc = parser.parseFromString(image, 'image/svg+xml');
+    console.log(doc);
+    Alert.alert('내보내기 완료!');
+  };
+
+  async function uploadSvgAsync(svg) {
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function (e) {
+        console.log(e);
+        reject(new TypeError('Network request failed'));
+      };
+      xhr.responseType = 'blob';
+      xhr.open('GET', svg, true);
+      xhr.send(null);
+    });
+    const metadata = {
+      contentType: 'image/svg',
+    };
+
+    const fileRef = ref(getStorage(), `${user.id}/Svg/${user.displayName}.png`);
+    const result = await uploadBytes(fileRef, blob, metadata);
+
+    // We're done with the blob, close and release it
+    blob.close();
+    return await getDownloadURL(fileRef);
+  }
 
   return (
     <View
@@ -82,9 +121,16 @@ const PaintHeader = ({ canvasRef, isDrawing, handleFunction }) => {
         <TouchableOpacity
           onPress={redo}
           activeOpacity={0.6}
-          style={styles.button}
+          style={[styles.button, { marginRight: 10 }]}
         >
           <Text style={styles.buttonText}>앞으로가기</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={load}
+          activeOpacity={0.6}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>불러오기</Text>
         </TouchableOpacity>
       </View>
 
@@ -94,11 +140,18 @@ const PaintHeader = ({ canvasRef, isDrawing, handleFunction }) => {
         }}
       >
         <TouchableOpacity
-          onPress={reset}
+          onPress={exportImg}
           activeOpacity={0.6}
           style={styles.button}
         >
-          <Text style={styles.buttonText}>다시시작하기</Text>
+          <Text style={styles.buttonText}>내보내기</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={reset}
+          activeOpacity={0.6}
+          style={[styles.button, { marginLeft: 10 }]}
+        >
+          <Text style={styles.buttonText}>다시 그리기</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
