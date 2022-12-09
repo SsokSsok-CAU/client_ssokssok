@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, Image, Dimensions, Alert } from 'react-native';
 import Album from '../../components/Album';
 import { useState, useEffect } from 'react';
 import { Pressable } from 'react-native';
@@ -49,7 +49,18 @@ function MainPage({ navigation, route }, props) {
   };
 
   const goHome = () => {
-    navigation.navigate('GuidePage');
+    Alert.alert(
+      '로그아웃 할까요?',
+      '정말루?',
+      [
+        {
+          text: '아니요',
+          style: 'cancel',
+        },
+        { text: '네', onPress: () => navigation.navigate('GuidePage') },
+      ],
+      { cancelable: false }
+    );
   };
 
   useEffect(() => {
@@ -60,7 +71,7 @@ function MainPage({ navigation, route }, props) {
   return (
     <View style={styles.container}>
       <View style={styles.MainTitleContainer}>
-        <Text style={styles.title}>{user.displayName}님의 앨범이예요!</Text>
+        <Text style={styles.title}>{user.displayName}님의 앨범이에요!</Text>
         <Text style={styles.description}>도면을 클릭해봐요!</Text>
       </View>
       <View style={styles.AlbumContainer}>
@@ -75,7 +86,7 @@ function MainPage({ navigation, route }, props) {
       </View>
       <View style={styles.footContainer}>
         <Pressable style={styles.buttonHome} onPress={goHome}>
-          <Text style={styles.buttonHomeText}>HOME</Text>
+          <Text style={styles.buttonHomeText}>로그아웃하기</Text>
         </Pressable>
       </View>
     </View>
@@ -120,7 +131,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 14,
     borderRadius: 30,
-    width: Dimensions.get('window').width / 1.2,
+    width: Dimensions.get('window').width / 4,
     elevation: 3,
     backgroundColor: '#0062D4',
   },

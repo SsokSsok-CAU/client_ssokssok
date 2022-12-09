@@ -64,13 +64,13 @@ function PickPicture({ navigation }, props) {
     // We're done with the blob, close and release it
     blob.close();
     sendAPItoConvert(image.uri, text);
-    refreshMainPage();
     setLoading(false);
-    return await getDownloadURL(fileRef);
+    return await getDownloadURL(fileRef).then(function () {
+      refreshMainPage();
+    });
   }
   const refreshMainPage = () => {
-    //TODO : REFRESH
-    //navigation.push('MainPage');
+    navigation.reset({ routes: [{ name: 'MainPage' }] });
   };
   const sendAPItoConvert = async (uri, text) => {
     const body = new FormData();

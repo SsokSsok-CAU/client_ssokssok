@@ -35,7 +35,9 @@
     "react-native-splash-screen": "^3.3.0",
     "react-native-view-slider": "^1.1.1",
     "rn-perfect-sketch-canvas": "^0.3.0",
-    "valtio": "^1.7.6"
+    "valtio": "^1.7.6",
+    "expo-splash-screen": "~0.17.5",
+    "expo-font": "~11.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3"

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -7,13 +7,11 @@ import {
   Pressable,
   Dimensions,
 } from 'react-native';
-import { useState } from 'react';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 function GuidePage({ navigation }, props) {
   const screenWidth = Math.round(Dimensions.get('window').width);
   const sliderWidth = Dimensions.get('window').width;
-
   const guideProps = [
     {
       title: '색칠쏙쏙',

@@ -41,7 +41,7 @@ function LoginPage({ navigation }, props) {
         response.data.token
       ).then(function () {
         setLoading(false);
-        navigation.navigate('MainPage');
+        navigation.reset({ routes: [{ name: 'MainPage' }] });
       });
     } catch (e) {
       setLoading(false);
