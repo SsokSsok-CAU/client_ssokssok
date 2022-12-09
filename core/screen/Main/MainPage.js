@@ -57,7 +57,10 @@ function MainPage({ navigation, route }, props) {
           text: '아니요',
           style: 'cancel',
         },
-        { text: '네', onPress: () => navigation.navigate('GuidePage') },
+        {
+          text: '네',
+          onPress: () => navigation.reset({ routes: [{ name: 'GuidePage' }] }),
+        },
       ],
       { cancelable: false }
     );

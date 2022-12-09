@@ -64,10 +64,7 @@ function PickPicture({ navigation }, props) {
     // We're done with the blob, close and release it
     blob.close();
     sendAPItoConvert(image.uri, text);
-    setLoading(false);
-    return await getDownloadURL(fileRef).then(function () {
-      refreshMainPage();
-    });
+    return await getDownloadURL(fileRef);
   }
   const refreshMainPage = () => {
     navigation.reset({ routes: [{ name: 'MainPage' }] });
@@ -84,6 +81,8 @@ function PickPicture({ navigation }, props) {
         },
         transformRequest: (formData) => formData,
       });
+      setLoading(false);
+      refreshMainPage();
     } catch (e) {
       console.log(e);
     }

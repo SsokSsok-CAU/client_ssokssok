@@ -88,7 +88,13 @@ function PaintPage(props) {
             <View style={styles.backgroundContainer}>
               {image.converting ? (
                 <Image
+                  style={{
+                    marginTop: 350,
+                    width: '100%',
+                    hegith: '100%',
+                  }}
                   source={require('../../assets/guide/loading.gif')}
+                  resizeMode="center"
                 ></Image>
               ) : (
                 <>
