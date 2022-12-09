@@ -57,7 +57,7 @@ function PaintPage(props) {
       state.strokeWidth = 8;
     }
   };
-
+  useEffect(() => canvasRef.current?.reset(), []);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.zoomContainer}>

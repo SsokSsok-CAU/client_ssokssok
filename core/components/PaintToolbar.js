@@ -14,7 +14,16 @@ const PaintToolbar = () => {
     state.strokeWidth = stroke;
     setShowStrokes(false);
   };
-  const colors = ['black', 'red', 'blue', 'green', '#892D32'];
+  const colors = [
+    'black',
+    'red',
+    'blue',
+    'green',
+    '#892D32',
+    'white',
+    'gray',
+    'lightblue',
+  ];
   const strokes = [5, 10, 15, 20, 25, 30, 35, 40, 45];
 
   return (

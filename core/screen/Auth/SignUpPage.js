@@ -37,13 +37,19 @@ function SignUpPage({ navigation }, props) {
         headers: { 'Content-Type': 'multipart/form-data' },
         transformRequest: (formData) => formData,
       });
-      snappingUser(id, response.data.displayName, response.data.token);
-      navigation.navigate('MainPage');
+      await snappingUser(
+        id,
+        response.data.displayName,
+        response.data.token
+      ).then(function () {
+        navigation.reset({ routes: [{ name: 'MainPage' }] });
+      });
       //navigation.navigate('GuideMainPage');
     } catch (e) {
       Alert.alert(
         '아이디는 이메일 형식, 비밀번호는 6자 이상의 영어+숫자입니다!'
       );
+      //navigation.reset({ routes: [{ name: 'MainPage' }] });
       console.log(e);
     }
   };

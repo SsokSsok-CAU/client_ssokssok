@@ -85,10 +85,7 @@ function LoginPage({ navigation }, props) {
           style={styles.inputForm}
           secureTextEntry
         ></TextInput>
-        <Pressable
-          onPress={(Keyboard.dismiss(), login)}
-          style={styles.buttonLogin}
-        >
+        <Pressable onPress={login} style={styles.buttonLogin}>
           <Text style={styles.buttonLoginText}>로그인하기</Text>
         </Pressable>
         <Pressable onPress={findPw}>
