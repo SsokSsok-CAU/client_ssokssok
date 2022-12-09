@@ -39,7 +39,7 @@ function SignUpPage({ navigation }, props) {
       });
       snappingUser(id, response.data.displayName, response.data.token);
       navigation.navigate('MainPage');
-      //navigation.navigate('GuideMainPage', { userInfo: userInfo });
+      //navigation.navigate('GuideMainPage');
     } catch (e) {
       Alert.alert(
         '아이디는 이메일 형식, 비밀번호는 6자 이상의 영어+숫자입니다!'

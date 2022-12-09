@@ -61,11 +61,14 @@ const PaintHeader = ({ canvasRef, isDrawing, handleFunction }) => {
   };
 
   const exportImg = () => {
+    /**
     const image = canvasRef.current?.toSvg(500, 500);
+    
     const parser = new DOMParser.DOMParser();
     const doc = parser.parseFromString(image, 'image/svg+xml');
     console.log(doc);
-    Alert.alert('내보내기 완료!');
+    */
+    handleFunction.onCapture();
   };
 
   async function uploadSvgAsync(svg) {

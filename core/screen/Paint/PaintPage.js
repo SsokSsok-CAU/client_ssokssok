@@ -10,12 +10,18 @@ import {
   SafeAreaView,
   Pressable,
   Text,
+  Button,
+  PermissionsAndroid,
+  Platform,
+  Share,
 } from 'react-native';
 // import { SafeAreaView } from 'react-native-safe-area-context';
 // for android
 import { SketchCanvas, SketchCanvasRef } from 'rn-perfect-sketch-canvas';
 import { useSnapshot } from 'valtio';
 import { state, image } from '../../store';
+import * as Sharing from 'expo-sharing';
+import ViewShot from 'react-native-view-shot';
 import PaintToolbar from '../../components/PaintToolbar';
 import PaintHeader from '../../components/PaintHeader';
 
@@ -25,9 +31,16 @@ function PaintPage(props) {
   const [isDrawing, setIsDrawing] = useState(true);
   const [preStrokeWidth, setPreStrokeWidth] = useState(8);
   const snap = useSnapshot(state);
-  const canvasRef = useRef(SketchCanvasRef);
+  const canvasRef = useRef(null);
   state.imageTitle = image.title;
   //const dummyImg = require('../../assets/sample/png1.png');
+  const cameraRef = useRef();
+
+  const onCapture = async () => {
+    cameraRef.current.capture().then((uri) => {
+      Sharing.shareAsync('file://' + uri);
+    });
+  };
 
   const handleZoom = () => {
     setPanToMove(true);
@@ -51,7 +64,7 @@ function PaintPage(props) {
         <PaintHeader
           canvasRef={canvasRef}
           isDrawing={isDrawing}
-          handleFunction={{ handleDraw, handleZoom }}
+          handleFunction={{ handleDraw, handleZoom, onCapture }}
         />
 
         <View
@@ -92,25 +105,33 @@ function PaintPage(props) {
               )}
             </View>
             <View style={styles.overlay}>
-              <View
-                style={{
-                  width: Dimensions.get('window').width,
-                  height: Dimensions.get('window').width,
-                  backgroundColor: 'transparent',
-                  borderRadius: 10,
+              <ViewShot
+                ref={cameraRef}
+                options={{
+                  fileName: `${image.title}`,
+                  format: 'jpg',
+                  quality: 0.9,
                 }}
               >
-                <SketchCanvas
-                  strokeColor={snap.strokeColor}
-                  strokeWidth={snap.strokeWidth}
-                  ref={canvasRef}
-                  containerStyle={styles.container}
-                />
-              </View>
+                <View
+                  style={{
+                    width: Dimensions.get('window').width,
+                    height: Dimensions.get('window').width,
+                    backgroundColor: 'transparent',
+                    borderRadius: 10,
+                  }}
+                >
+                  <SketchCanvas
+                    strokeColor={snap.strokeColor}
+                    strokeWidth={snap.strokeWidth}
+                    ref={canvasRef}
+                    containerStyle={styles.container}
+                  />
+                </View>
+              </ViewShot>
             </View>
           </ImageZoom>
         </View>
-
         <PaintToolbar />
       </View>
       {isDrawing ? (
