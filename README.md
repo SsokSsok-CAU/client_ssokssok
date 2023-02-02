@@ -1,34 +1,103 @@
-# client_ssokssok
+# 색칠쏙쏙 FrontEnd
+
+![색칠쏙쏙](https://user-images.githubusercontent.com/42240965/216251429-0fe1b0d5-d38f-4d40-b754-8a678d578598.png)
 
 Client for Paint_ssokssok (React Native)
 
-# PRETTIER
+# Live Service
 
-[VSCODE]
-Prettier - Code formatter 사용
+![image](https://user-images.githubusercontent.com/42240965/216276319-33d2ff5e-f9f4-4094-b83f-c4806432d2ce.png)
+`Only for IOS`
 
-## MANUAL
+> 2023.02.02 현재 요금문제로 서버가 닫혀있습니다.
 
-1. 'expo go' 모바일에서 설치 && 회원가입
+## User Manual
 
-2. npm install -g expo-cli
+- [1조(색칠쏙쏙) UserManual.pdf](https://github.com/SsokSsok-CAU/.github/files/10566019/1.UserManual.pdf)
 
-3. expo login --username "Expo 사이트 가입당시 입력한 name"
+# Tech Stacks
 
-4. git clone 받아서 npx expo start
+## Core
 
-5. 모바일 expo go 앱에 들어가서 QR 또는 local development 확인
+- ReactNative
+- React Navigation
+- Valtio
+- Axios
+- Firebase
+- AsyncStorage
 
-## Error
+## Feature
 
-```
-Invariant Violation: ViewPropTypes has been removed from React Native.
-```
+- expo-image-picker
+- react-native-image-pan-zoom
+- react-native-safe-area-context
+- react-native-view-shot
+- rn-perfect-sketch-canvas
+- expo-sharing
+- @react-native-camera-roll/camera-roll
 
-1. `npm install deprecated-react-native-prop-types`
+## Styling
 
-2. \node_modules\react-native-snap-carousel\src 모든 파일 중<br>
-   `import {ViewPropTypes} from 'react-native'`를<br>
-   `import { ViewPropTypes } from 'deprecated-react-native-prop-types';`로 바꿔준다.
+- ESLint
+- Prettier
 
-3. npx expo start
+## Deploy
+
+- Expo
+
+# Getting Started
+
+## Development
+
+1. SignUp 'Expo Go'
+
+2. Install expo-cli
+
+   `npm install -g expo-cli`
+
+3. Login Expo
+
+   `expo login --username "Expo 사이트 가입당시 입력한 name"`
+
+4. Clone this repository
+
+   `git clone https://github.com/SsokSsok-CAU/client_ssokssok.git`
+
+5. Install node packages
+
+   `npm install`
+
+6. Start developing
+
+   `npx expo start`
+
+## Trouble
+
+`Invariant Violation: ViewPropTypes has been removed from React Native.`
+
+1. Install deprecated-react-native-prop-types
+
+   `npm install deprecated-react-native-prop-types`
+
+2. Replace ALL
+
+   `import {ViewPropTypes} from 'react-native'` To `import { ViewPropTypes } from 'deprecated-react-native-prop-types'`
+
+> In Directory
+>
+> > \node_modules\react-native-snap-carousel\src
+> >
+> > ...etc
+
+# Commit Message Rules
+
+## Consider starting the commit message:
+
+- `feat(####)`: prefix.
+  - when creating new feature.
+- `fix(####)`: prefix.
+  - when fixing a bug.
+- `refactor(####)`: prefix.
+  - when setting new development environment or refactoring codes
+- `docs(####)`: prefix.
+  - when adding/modifying document.
